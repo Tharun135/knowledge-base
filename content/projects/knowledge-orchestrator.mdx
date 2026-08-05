@@ -1,0 +1,41 @@
+---
+title: "Docs Agent Orchestrator"
+description: "Automated documentation generation and categorization engine that uses RAG and specialized agents to maintain an internal developer portal."
+date: "2024-11-20"
+tags: ["Python", "RAG", "Knowledge Management", "LangChain"]
+category: "Data Engineering"
+---
+
+## Overview
+
+The Docs Agent Orchestrator is a scalable documentation pipeline that ingests messy, heterogeneous sources—Jira tickets, Slack threads, Confluence pages, and unstructured code comments—and synthesizes them into structured, unified Markdown files for an Enterprise Developer Portal.
+
+### The Problem
+
+- Developers spread critical architectural decisions across multiple platforms.
+- "We don't have time to write docs" is a common theme.
+- Outdated docs are a major source of technical debt and developer frustration.
+
+### Objectives
+
+1. Centralize scattered knowledge.
+2. Automate basic architectural reasoning (what feature affects what module).
+3. Generate cohesive onboarding materials for new engineers.
+
+## Pipeline Architecture
+
+- **Ingestion Layer:** Connectors for Slack, Jira, GitHub.
+- **Processing Layer:** LLM models perform topic extraction and summarization.
+- **RAG Engine:** Embeds documentation chunks into Vector DB.
+- **Generation Layer:** Emits sanitized MDX files ready for static site generation.
+
+## Implementation Details
+
+Built using `Python`, `FastAPI`, `LangChain`, and `Pinecone`.
+
+> The most difficult part wasn't the AI—it was parsing legacy Confluence XML formats efficiently.
+
+## Outcomes
+
+- Automatically generated over 5,000 pages of missing context.
+- Established a single-source-of-truth semantic search for the engineering division.

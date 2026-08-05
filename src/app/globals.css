@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-brand-50: #f0fdfa;
+  --color-brand-100: #ccfbf1;
+  --color-brand-200: #99f6e4;
+  --color-brand-300: #5eead4;
+  --color-brand-400: #2dd4bf;
+  --color-brand-500: #14b8a6;
+  --color-brand-600: #0d9488;
+  --color-brand-700: #0f766e;
+  --color-brand-800: #115e59;
+  --color-brand-900: #134e4a;
+  --color-brand-950: #042f2e;
+
+  --color-bg-base: #ffffff;
+  --color-bg-subtle: #f4f4f5;
+  --color-bg-surface: #ffffff;
+  --color-border-base: #e4e4e7;
+  
+  --color-text-base: #09090b;
+  --color-text-muted: #71717a;
+  
+  --font-sans: "Inter", var(--font-geist-sans), sans-serif;
+  --font-mono: "JetBrains Mono", var(--font-geist-mono), monospace;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #09090b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: #e4e4e7;
+  --brand: #0d9488;
+  --surface: #ffffff;
+  --code-bg: #f4f4f5;
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --border: #27272a;
+  --brand: #2dd4bf;
+  --surface: #0f0f12;
+  --code-bg: #18181b;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+* {
+  border-color: var(--border);
+}
+
+::selection {
+  background-color: var(--brand);
+  color: #ffffff;
+}
+
+.dark ::selection {
+  background-color: var(--brand);
+  color: #09090b;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Prose for MDX */
+.prose {
+  color: var(--foreground);
+  max-width: 65ch;
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: var(--foreground);
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+.prose p {
+  line-height: 1.7;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: var(--muted-foreground);
+}
+.prose a {
+  color: var(--brand);
+  text-decoration: none;
+  font-weight: 500;
+}
+.prose a:hover {
+  text-decoration: underline;
+}
+.prose code {
+  background: var(--code-bg);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+.prose pre {
+  background: var(--code-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+}
+.prose pre code {
+  background: transparent;
+  padding: 0;
+}
+.prose ul, .prose ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+  color: var(--muted-foreground);
+}
+.prose li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
