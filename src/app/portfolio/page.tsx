@@ -14,6 +14,7 @@ import {
   Cpu
 } from "lucide-react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { ApiPlayground } from "@/components/portfolio/ApiPlayground";
 import { StyleGuideSection } from "@/components/portfolio/StyleGuideCard";
 import { DocSampleModal, SAMPLE_DOCUMENTS, DocSample } from "@/components/portfolio/DocSampleModal";
@@ -52,30 +53,30 @@ export default function PortfolioPage() {
 
         {/* Portfolio Stats Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 mt-2">
-          <div className="p-4 rounded-xl border border-border bg-surface flex flex-col gap-1">
+          <motion.div whileHover={{ y: -3 }} className="p-4 rounded-xl border border-border bg-surface flex flex-col gap-1 shadow-sm">
             <span className="text-2xl font-bold font-mono text-brand">7</span>
             <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
               Featured Edge Apps
             </span>
-          </div>
-          <div className="p-4 rounded-xl border border-border bg-surface flex flex-col gap-1">
+          </motion.div>
+          <motion.div whileHover={{ y: -3 }} className="p-4 rounded-xl border border-border bg-surface flex flex-col gap-1 shadow-sm">
             <span className="text-2xl font-bold font-mono text-foreground">100%</span>
             <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
               Fluid Topics Links
             </span>
-          </div>
-          <div className="p-4 rounded-xl border border-border bg-surface flex flex-col gap-1">
+          </motion.div>
+          <motion.div whileHover={{ y: -3 }} className="p-4 rounded-xl border border-border bg-surface flex flex-col gap-1 shadow-sm">
             <span className="text-2xl font-bold font-mono text-foreground">3</span>
             <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
               Live API Explorers
             </span>
-          </div>
-          <div className="p-4 rounded-xl border border-border bg-surface flex flex-col gap-1">
+          </motion.div>
+          <motion.div whileHover={{ y: -3 }} className="p-4 rounded-xl border border-border bg-surface flex flex-col gap-1 shadow-sm">
             <span className="text-2xl font-bold font-mono text-brand">99.8%</span>
             <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
               Accuracy Index
             </span>
-          </div>
+          </motion.div>
         </div>
       </div>
 
@@ -128,8 +129,9 @@ export default function PortfolioPage() {
         {/* Category Filters */}
         <div className="flex flex-wrap items-center gap-2">
           {categories.map((cat) => (
-            <button
+            <motion.button
               key={cat}
+              whileTap={{ scale: 0.96 }}
               onClick={() => setActiveCategory(cat)}
               className={`px-3.5 py-1.5 text-xs font-medium rounded-lg transition-colors border ${
                 activeCategory === cat
@@ -138,70 +140,83 @@ export default function PortfolioPage() {
               }`}
             >
               {cat}
-            </button>
+            </motion.button>
           ))}
         </div>
 
         {/* Grid of Samples */}
         <div className="grid md:grid-cols-2 gap-6">
-          {filteredSamples.length > 0 ? (
-            filteredSamples.map((sample) => (
-              <a
-                key={sample.id}
-                href={sample.portalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex flex-col justify-between p-6 border border-border bg-surface rounded-xl hover:border-brand/60 hover:shadow-lg transition-all"
-              >
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-brand/10 text-brand">
-                      {sample.category}
-                    </span>
-                    <span className="text-xs font-mono text-muted-foreground">{sample.readTime}</span>
-                  </div>
-
-                  <div className="font-bold text-lg text-foreground group-hover:text-brand transition-colors flex items-center gap-2">
-                    <span>{sample.title}</span>
-                    <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 text-brand" />
-                  </div>
-
-                  <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
-                    {sample.description}
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-4 mt-6 pt-4 border-t border-border/50">
-                  <div className="flex flex-wrap gap-1.5">
-                    {sample.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-0.5 text-[11px] font-mono bg-muted/60 text-muted-foreground rounded"
-                      >
-                        #{tag}
+          <AnimatePresence mode="popLayout">
+            {filteredSamples.length > 0 ? (
+              filteredSamples.map((sample) => (
+                <motion.a
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  key={sample.id}
+                  href={sample.portalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex flex-col justify-between p-6 border border-border bg-surface rounded-xl hover:border-brand/60 hover:shadow-lg transition-all"
+                >
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-brand/10 text-brand">
+                        {sample.category}
                       </span>
-                    ))}
+                      <span className="text-xs font-mono text-muted-foreground">{sample.readTime}</span>
+                    </div>
+
+                    <div className="font-bold text-lg text-foreground group-hover:text-brand transition-colors flex items-center gap-2">
+                      <span>{sample.title}</span>
+                      <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 text-brand" />
+                    </div>
+
+                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+                      {sample.description}
+                    </p>
                   </div>
 
-                  <div className="flex items-center justify-between gap-2 pt-1">
-                    <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
-                      <FileCode className="h-3.5 w-3.5 text-brand" /> {sample.format}
-                    </span>
+                  <div className="flex flex-col gap-4 mt-6 pt-4 border-t border-border/50">
+                    <div className="flex flex-wrap gap-1.5">
+                      {sample.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 text-[11px] font-mono bg-muted/60 text-muted-foreground rounded"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
 
-                    <span className="text-xs font-semibold text-brand group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
-                      Open in Fluid Topics <ExternalLink className="h-3.5 w-3.5" />
-                    </span>
+                    <div className="flex items-center justify-between gap-2 pt-1">
+                      <span className="text-xs font-mono text-muted-foreground flex items-center gap-1">
+                        <FileCode className="h-3.5 w-3.5 text-brand" /> {sample.format}
+                      </span>
+
+                      <span className="text-xs font-semibold text-brand group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+                        Open in Fluid Topics <ExternalLink className="h-3.5 w-3.5" />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </a>
-            ))
-          ) : (
-            <div className="col-span-full py-12 text-center text-muted-foreground border border-dashed border-border rounded-lg">
-              No documentation samples match your search criteria.
-            </div>
-          )}
+                </motion.a>
+              ))
+            ) : (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="col-span-full py-12 text-center text-muted-foreground border border-dashed border-border rounded-lg"
+              >
+                No documentation samples match your search criteria.
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
+
 
       {/* Docs-as-Code Quick Links / Action Footer */}
       <section className="p-8 border border-border bg-surface rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">

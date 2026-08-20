@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Code, Copy, Check, Terminal, FileJson, Globe, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
+
 
 interface Endpoint {
   id: string;
@@ -311,8 +313,9 @@ export function ApiPlayground() {
         {ENDPOINTS.map((ep) => {
           const isSelected = ep.id === selectedId;
           return (
-            <button
+            <motion.button
               key={ep.id}
+              whileTap={{ scale: 0.96 }}
               onClick={() => setSelectedId(ep.id)}
               className={`flex items-center gap-2 px-3 py-2 text-xs font-mono rounded-t-md transition-colors border-t border-x ${
                 isSelected
@@ -320,15 +323,11 @@ export function ApiPlayground() {
                   : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted/40"
               }`}
             >
-              <span
-                className={`px-1.5 py-0.5 text-[10px] font-bold rounded border ${getMethodBadgeClass(
-                  ep.method
-                )}`}
-              >
+              <span className={`px-1.5 py-0.5 rounded text-[10px] border font-bold ${getMethodBadgeClass(ep.method)}`}>
                 {ep.method}
               </span>
-              <span>{ep.path}</span>
-            </button>
+              <span>{ep.title.split(" - ")[0]}</span>
+            </motion.button>
           );
         })}
       </div>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { 
   Book, 
   Briefcase, 
@@ -79,18 +80,25 @@ export function Sidebar() {
               </h4>
               <ul className="space-y-1">
                 {items.map((item) => {
-                  const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+                  const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
                   return (
-                    <li key={item.name}>
+                    <li key={item.name} className="relative">
                       <Link
                         href={item.href}
                         className={cn(
-                          "group flex items-center gap-3 rounded-md px-2 py-1.5 text-sm font-medium transition-colors",
+                          "group relative flex items-center gap-3 rounded-md px-2 py-1.5 text-sm font-medium transition-colors z-10",
                           isActive
-                            ? "bg-brand/10 text-brand"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                            ? "text-brand font-semibold"
+                            : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
                         )}
                       >
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeSidebarItem"
+                            className="absolute inset-0 bg-brand/10 rounded-md -z-10"
+                            transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                          />
+                        )}
                         <item.icon className={cn(
                           "h-4 w-4 shrink-0 transition-colors",
                           isActive ? "text-brand" : "text-muted-foreground group-hover:text-foreground"
@@ -118,3 +126,4 @@ export function Sidebar() {
     </aside>
   );
 }
+
