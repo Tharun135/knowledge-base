@@ -1,5 +1,28 @@
-import { Settings2, Cpu, Bot, Workflow } from "lucide-react";
+"use client";
+
+import { Settings2, Cpu, Bot, Workflow, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { motion, Variants } from "framer-motion";
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" as const },
+  },
+};
 
 export default function AutomationPage() {
   const areas = [
@@ -26,45 +49,66 @@ export default function AutomationPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-10 pb-16 max-w-4xl">
-      <div className="flex flex-col gap-2 border-b border-border pb-8">
-        <h1 className="text-4xl font-bold tracking-tight">AI & Automation</h1>
-        <p className="text-lg text-muted-foreground">
+    <motion.div 
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col gap-10 pb-16 max-w-4xl mx-auto"
+    >
+      {/* Header */}
+      <motion.div variants={itemVariants} className="flex flex-col gap-3 border-b border-border pb-8">
+        <div className="flex items-center gap-2 text-brand font-mono text-xs uppercase font-medium tracking-wider px-3 py-1 bg-brand/10 w-fit rounded-full">
+          <Settings2 className="h-3.5 w-3.5" />
+          <span>Intelligent Systems</span>
+        </div>
+        <h1 className="text-4xl font-bold tracking-tight text-foreground">AI & Automation</h1>
+        <p className="text-lg text-muted-foreground leading-relaxed">
           Transforming manual documentation tasks into intelligent, automated engineering workflows.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="prose prose-zinc dark:prose-invert">
-        <p className="lead">
+      {/* Intro */}
+      <motion.div variants={itemVariants} className="prose prose-zinc dark:prose-invert max-w-none">
+        <p className="text-muted-foreground leading-relaxed text-base">
           In modern software development, documentation cannot rely entirely on manual human effort. By leveraging Large Language Models (LLMs) and automated pipelines, we can scale documentation operations to match engineering velocity.
         </p>
-      </div>
+      </motion.div>
 
-      <div className="grid sm:grid-cols-2 gap-6 mt-4">
+      {/* Cards */}
+      <div className="grid sm:grid-cols-2 gap-6 mt-2">
         {areas.map((area, i) => (
-          <div key={i} className="flex flex-col gap-3 p-6 border border-border bg-surface rounded-lg hover:border-brand/50 transition-colors">
-            <div className="bg-brand/10 w-fit p-2 rounded-md text-brand mb-2">
+          <motion.div 
+            key={i} 
+            variants={itemVariants}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            className="flex flex-col gap-3 p-6 border border-border bg-surface rounded-xl hover:border-brand/50 hover:shadow-md transition-all group"
+          >
+            <div className="bg-brand/10 border border-brand/20 w-fit p-2.5 rounded-lg text-brand mb-1">
               <area.icon className="h-5 w-5" />
             </div>
-            <h3 className="font-semibold text-lg">{area.title}</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <h3 className="font-bold text-lg text-foreground group-hover:text-brand transition-colors">{area.title}</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">
               {area.description}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
 
-      <div className="flex flex-col gap-4 mt-8 border-t border-border pt-8">
-        <h2 className="text-2xl font-bold">Featured Automation Projects</h2>
-        <div className="flex gap-4">
-          <Link href="/projects/knowledge-orchestrator" className="inline-flex items-center text-brand hover:underline font-medium text-sm">
-            Docs Agent Orchestrator →
+      {/* Featured Projects Links */}
+      <motion.div variants={itemVariants} className="flex flex-col gap-4 mt-4 border-t border-border pt-8">
+        <h2 className="text-xl font-bold text-foreground">Featured Automation Projects</h2>
+        <div className="flex flex-wrap gap-4">
+          <Link href="/projects/knowledge-orchestrator" className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold bg-surface border border-border px-4 py-2 rounded-lg text-brand hover:border-brand/40 transition-colors shadow-sm">
+            <span>Docs Agent Orchestrator</span>
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
-          <Link href="/projects/docpilot" className="inline-flex items-center text-brand hover:underline font-medium text-sm">
-            DocPilot VS Code Extension →
+          <Link href="/projects/docpilot" className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold bg-surface border border-border px-4 py-2 rounded-lg text-brand hover:border-brand/40 transition-colors shadow-sm">
+            <span>DocPilot VS Code Extension</span>
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
+
