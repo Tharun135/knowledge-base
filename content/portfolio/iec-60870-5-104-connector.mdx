@@ -1,0 +1,50 @@
+---
+title: "Connector for IEC 60870-5-104 Integration Manual"
+description: "Integration manual for configuring IEC 60870-5-104 telecontrol protocol communications with sub-station RTUs and smart grid control systems on Industrial Edge Devices."
+date: "2024-11-08"
+tags: ["IEC 60870-5-104", "Smart Grid", "Telecontrol", "Industrial Edge"]
+category: "User Manual"
+portalUrl: "https://docs.industrial-operations-x.siemens.cloud/r/en-us/v2.0/connector-for-iec-60870-5-104"
+---
+
+# Connector for IEC 60870-5-104 Integration Manual
+
+This manual guides automation engineers in configuring the **Connector for IEC 60870-5-104** to establish reliable telecontrol communication between Industrial Edge Devices (IED) and Remote Terminal Units (RTUs).
+
+---
+
+## 1. Overview & Protocol Setup
+
+IEC 60870-5-104 (IEC 104) is an international standard telecontrol protocol operating over TCP/IP (port 2404), widely used in power distribution, water management, and energy grids.
+
+### Key Features:
+- **ASDU Type Support**: Single Points (`M_SP_NA_1`), Measured Values Normalized (`M_ME_NA_1`), Floating Point (`M_ME_NC_1`).
+- **Cause of Transmission (COT)**: Spontaneous (3), Cyclic (1), Interrogated (20).
+- **Time Synchronization**: CP56Time2A 7-octet high-resolution timestamping.
+
+---
+
+## 2. Information Object Address (IOA) Mapping Table
+
+| Information Object Address (IOA) | ASDU Type | Signal Description | Unit | Transmission Mode |
+| :--- | :--- | :--- | :--- | :--- |
+| **1001** | `M_SP_NA_1` | Circuit Breaker 1 Position Status | Boolean | Spontaneous (COT 3) |
+| **2004** | `M_ME_NC_1` | Substation Busbar Voltage (Phase A) | kV (Float32) | Cyclic 1000ms |
+| **2005** | `M_ME_NC_1` | Substation Transformer Active Power | MW (Float32) | Cyclic 1000ms |
+
+---
+
+## 3. Configuring Station Interrogation
+
+To trigger a General Interrogation (GI) command upon initial connection startup:
+
+```yaml
+iec104_connection:
+  ip_address: "10.200.14.10"
+  port: 2404
+  common_address_asdu: 1
+  k_value: 12  # APDU unacknowledged threshold
+  w_value: 8   # APDU acknowledgement timeout
+  t1_timeout_sec: 15
+  auto_general_interrogation: true
+```

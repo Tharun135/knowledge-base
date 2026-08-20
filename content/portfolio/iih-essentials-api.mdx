@@ -1,0 +1,74 @@
+---
+title: "IIH Essentials REST & Data Modeling API Reference"
+description: "REST & GraphQL API specification for configuring IIH Essentials data model storage, tag ingestion pipelines, and historical archive data queries."
+date: "2024-11-15"
+tags: ["IIH Essentials", "REST API", "Industrial Edge", "GraphQL"]
+category: "API Reference"
+portalUrl: "https://docs.industrial-operations-x.siemens.cloud/r/en-us/v2.6/iih-essentials-api"
+---
+
+# IIH Essentials REST & Data Modeling API Reference
+
+**IIH Essentials** (Industrial Information Hub) provides the core data persistence and semantic abstraction layer for Industrial Edge Devices (IED), storing live variable values and historical time-series data.
+
+---
+
+## 1. Authentication & Base Endpoint
+
+All REST request calls require a Bearer token in the `Authorization` header:
+
+```
+Base URL: https://<ied-ip-address>/api/v2/iih/essentials
+```
+
+---
+
+## 2. API Endpoints
+
+### List Provisioned Variables
+`GET /api/v2/iih/essentials/tags`
+
+#### Query Parameters:
+- `connector` *(optional, string)*: Filter by source connector (`s7plus`, `modbus`, `profinet`, `ethernetip`).
+- `datatype` *(optional, string)*: Filter by type (`Bool`, `Int32`, `Float32`, `String`).
+
+#### Response Example (HTTP 200 OK):
+```json
+{
+  "total_tags": 2,
+  "tags": [
+    {
+      "tag_id": "tag_s7_001",
+      "name": "Main_Press_Pressure_Bar",
+      "connector": "s7plus",
+      "datatype": "Float32",
+      "archive_enabled": true,
+      "archive_interval_ms": 500
+    },
+    {
+      "tag_id": "tag_modbus_004",
+      "name": "Chiller_Coolant_Temp",
+      "connector": "modbus",
+      "datatype": "Float32",
+      "archive_enabled": true,
+      "archive_interval_ms": 1000
+    }
+  ]
+}
+```
+
+---
+
+### Query Historical Archive Time-Series Data
+`POST /api/v2/iih/essentials/archive/query`
+
+#### Request Payload:
+```json
+{
+  "tag_ids": ["tag_s7_001"],
+  "start_time": "2024-11-15T00:00:00Z",
+  "end_time": "2024-11-15T01:00:00Z",
+  "aggregate": "AVERAGE",
+  "sample_interval_sec": 60
+}
+```

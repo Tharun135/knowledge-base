@@ -1,0 +1,50 @@
+---
+title: "SIMATIC WinCC Unified Runtime Operations Runbook"
+description: "Operations runbook for deploying SIMATIC WinCC Unified HMI Runtime on Industrial Edge Devices, managing web visualization screens and alarms."
+date: "2024-11-04"
+tags: ["WinCC Unified", "HMI / SCADA", "Web Visualization", "Industrial Edge"]
+category: "Runbook & Ops"
+portalUrl: "https://docs.industrial-operations-x.siemens.cloud/r/en-us/v3.0/simatic-wincc-unified-runtime"
+---
+
+# SIMATIC WinCC Unified Runtime Operations Runbook
+
+Operational playbook for deploying, managing, and troubleshooting **SIMATIC WinCC Unified Runtime** applications hosted on Siemens Industrial Edge Devices (IED).
+
+---
+
+## 1. Overview & Architecture
+
+SIMATIC WinCC Unified Runtime on Industrial Edge allows web-based HMI visualizations and SCADA dashboards to run directly on edge IPC hardware, accessible via any modern HTML5 web browser.
+
+### Key Architecture Components:
+- **HTML5 Web Client**: Scalable vector graphics (SVG) rendered client-side on browsers.
+- **WinCC Unified Data Service**: Tag engine connected directly to IIH Essentials and S7+ Connector.
+- **SQLite / PostgreSQL Alarm Archive**: Local persistent event and audit trail storage.
+
+---
+
+## 2. Deploying WinCC Unified Apps via IEM
+
+1. Export the WinCC Unified project runtime package (`.zip`) from TIA Portal.
+2. Upload package to **Industrial Edge Management (IEM)** App Repository.
+3. Deploy to target Industrial Edge Device.
+4. Access web visualization URL: `https://<ied-ip-address>:8443/wincc-unified/`.
+
+---
+
+## 3. Operational Troubleshooting Procedures
+
+### Issue: HMI Screen displays "Tag Disconnected" indicators:
+1. Verify S7+ Connector container status:
+   ```bash
+   docker ps | grep s7plus-connector
+   ```
+2. Test IIH Essentials tag routing:
+   ```bash
+   curl -k https://localhost/api/v2/iih/essentials/tags -H "Authorization: Bearer $TOKEN"
+   ```
+3. Restart WinCC Unified Runtime service container:
+   ```bash
+   docker restart edge-wincc-unified-runtime
+   ```

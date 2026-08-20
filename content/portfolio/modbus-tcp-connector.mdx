@@ -1,0 +1,62 @@
+---
+title: "Modbus TCP Connector Parameter & Register Mapping Guide"
+description: "Developer quickstart and parameter guide for acquiring Modbus TCP holding registers, input registers, and coils from legacy PLC field devices."
+date: "2024-11-01"
+tags: ["Modbus TCP", "Legacy PLCs", "Industrial Edge", "Databus"]
+category: "SDK Guide"
+portalUrl: "https://docs.industrial-operations-x.siemens.cloud/r/en-us/v1.0/modbus-tcp-connector"
+---
+
+# Modbus TCP Connector Parameter & Register Mapping Guide
+
+The **Modbus TCP Connector** allows Industrial Edge Devices (IED) to read and write registers across legacy Modbus TCP slave devices, energy meters, and sensor gateways.
+
+---
+
+## 1. Register Types & Address Mapping Convention
+
+The connector maps standard Modbus 5-digit address conventions:
+
+| Register Category | Modbus Address Range | Function Code | Data Access |
+| :--- | :--- | :--- | :--- |
+| **Coils** | `00001 - 09999` | FC 01 (Read), FC 05 (Write) | Read / Write (Bit) |
+| **Discrete Inputs** | `10001 - 19999` | FC 02 (Read) | Read-Only (Bit) |
+| **Input Registers** | `30001 - 39999` | FC 04 (Read) | Read-Only (16-bit Word) |
+| **Holding Registers** | `40001 - 49999` | FC 03 (Read), FC 06/16 (Write) | Read / Write (16-bit Word) |
+
+---
+
+## 2. Byte Swapping & Endianness Configuration
+
+For 32-bit (Float32 / Int32) values spanning two consecutive 16-bit registers:
+
+```yaml
+endianness_modes:
+  BIG_ENDIAN: "No swap (AB CD)"
+  LITTLE_ENDIAN: "Byte & word swap (DC BA)"
+  BIG_ENDIAN_BYTE_SWAP: "Byte swap only (BA DC)"
+  LITTLE_ENDIAN_BYTE_SWAP: "Word swap only (CD AB)"
+```
+
+---
+
+## 3. Example JSON Config for Modbus Energy Meter
+
+```json
+{
+  "server_ip": "192.168.1.120",
+  "port": 502,
+  "unit_id": 1,
+  "timeout_ms": 2000,
+  "registers": [
+    {
+      "name": "Phase_1_Voltage",
+      "register_type": "HOLDING_REGISTER",
+      "address": 40001,
+      "datatype": "Float32",
+      "endianness": "BIG_ENDIAN_BYTE_SWAP",
+      "scale_factor": 0.1
+    }
+  ]
+}
+```

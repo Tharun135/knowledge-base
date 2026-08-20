@@ -1,0 +1,77 @@
+---
+title: "Ethernet IP Connector Technical Manual & Databus Payload Spec"
+description: "Technical guide and tag payload specification for connecting EtherNet/IP CIP controllers (Rockwell Allen-Bradley ControlLogix/CompactLogix) to Industrial Edge Databus."
+date: "2024-11-12"
+tags: ["EtherNet/IP", "CIP Protocol", "Industrial Edge", "Databus"]
+category: "API Reference"
+portalUrl: "https://docs.industrial-operations-x.siemens.cloud/r/en-us/v4.2/ethernet-ip-connector"
+---
+
+# Ethernet IP Connector Technical Manual & Databus Payload Spec
+
+The **Ethernet IP Connector** enables Industrial Edge Devices (IED) to acquire tag data from EtherNet/IP CIP controllers (such as Allen-Bradley ControlLogix and CompactLogix PLCs) and publish telemetry payloads to the local **Databus**.
+
+---
+
+## 1. Protocol Architecture & Connection Parameters
+
+Communication uses standard Common Industrial Protocol (CIP) over Encapsulated Ethernet IP (TCP port 44818 for explicit messaging, UDP port 2222 for implicit I/O messaging).
+
+### Connection Properties:
+- **Target PLC Type**: Rockwell Allen-Bradley ControlLogix / CompactLogix / Micro800
+- **CIP Path**: `1, 0` (Backplane slot 0)
+- **Max Tag Polling Batch Size**: 500 tags / request
+- **Default Databus Payload Topic**: `ie/m/j/simatic/v1/eip1/dp/r/<connection_name>/#`
+
+---
+
+## 2. Tag Configuration Schema
+
+Tag connections are provisioned via **Common Configurator** or submitted via JSON API:
+
+```json
+{
+  "connection_name": "EIP_ControlLogix_Line1",
+  "plc_ip_address": "192.168.10.50",
+  "slot": 0,
+  "acquisition_cycle_ms": 100,
+  "tags": [
+    {
+      "name": "Program:MainProgram.Conveyor_Speed_RPM",
+      "datatype": "REAL",
+      "alias": "Conveyor_Speed_RPM"
+    },
+    {
+      "name": "Program:MainProgram.Emergency_Stop_Active",
+      "datatype": "BOOL",
+      "alias": "EStop_Status"
+    }
+  ]
+}
+```
+
+---
+
+## 3. Databus Published MQTT Payload
+
+When tag values update, the Ethernet IP Connector emits JSON payloads on the Databus:
+
+```json
+{
+  "seq": 10492,
+  "vals": [
+    {
+      "id": "Conveyor_Speed_RPM",
+      "val": 1750.25,
+      "q": 192,
+      "ts": "2024-11-12T14:22:00.104Z"
+    },
+    {
+      "id": "EStop_Status",
+      "val": false,
+      "q": 192,
+      "ts": "2024-11-12T14:22:00.104Z"
+    }
+  ]
+}
+```

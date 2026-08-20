@@ -1,0 +1,53 @@
+---
+title: "SIMATIC S7+ Connector High-Performance Specification"
+description: "High-performance connector specification for optimized symbolic tag access to SIMATIC S7-1200 and S7-1500 PLC controllers using S7+ protocol."
+date: "2024-11-14"
+tags: ["SIMATIC S7+", "S7-1500", "Symbolic Tags", "Siemens PLC"]
+category: "API Reference"
+portalUrl: "https://docs.industrial-operations-x.siemens.cloud/r/en-us/v2.0/simatic-s7plus-connector"
+---
+
+# SIMATIC S7+ Connector High-Performance Specification
+
+The **SIMATIC S7+ Connector** provides high-throughput symbolic tag reading and writing for Siemens SIMATIC S7-1200, S7-1500, and Drive Controller PLCs over the optimized S7+ protocol.
+
+---
+
+## 1. Key Features & Advantages
+
+Compared to legacy S7 communications (GET/PUT), S7+ protocol provides:
+- **Symbolic Tag Browsing**: Access variables directly by TIA Portal symbol names without needing absolute DB memory offsets.
+- **Optimized Data Block Access**: Read data from memory blocks configured with "Optimized block access" enabled in TIA Portal.
+- **TLS Encrypted Transport**: Full integrity protection for S7-1500 firmware v2.9+ / v3.0+ security profiles.
+
+---
+
+## 2. TIA Portal Symbol Import (.aml / .zip)
+
+To bulk-configure symbolic tags:
+1. Export project symbols from TIA Portal using **Siemens TIA Openness** or export `.aml` file.
+2. In **Common Configurator**, click **Import TIA File**.
+3. Select target variables to subscribe to.
+
+---
+
+## 3. Subscribing to Symbolic Tags via REST API
+
+`POST /api/v1/s7plus/connectors/subscribe`
+
+#### Request Payload:
+```json
+{
+  "connection_name": "S71500_Cell_01",
+  "plc_ip": "192.168.1.10",
+  "tls_security_level": "TLS_1_3",
+  "plc_user": "edge_read_user",
+  "symbols": [
+    "DB_ProductionData.Header.BatchNumber",
+    "DB_ProductionData.Process.Temperature_Zone1",
+    "DB_ProductionData.Process.Pressure_Bar"
+  ],
+  "sampling_mode": "ON_CHANGE",
+  "cycle_time_ms": 50
+}
+```
