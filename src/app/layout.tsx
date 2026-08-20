@@ -10,8 +10,46 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-geist-sans" });
 const jetBrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
-  title: "Career Knowledge Base | Documentation Engineer",
-  description: "Documentation portal and single source of truth for my professional career as a Documentation Engineer.",
+  metadataBase: new URL("https://tharun135.github.io/knowledge-base"),
+  title: {
+    default: "Career Knowledge Base | Documentation Engineer",
+    template: "%s | Documentation Engineer"
+  },
+  description: "Documentation portal and single source of truth for my professional career as a Documentation Engineer specializing in Docs-as-Code, AI agents, and developer experience.",
+  keywords: [
+    "Documentation Engineer",
+    "Docs-as-Code",
+    "Technical Writer",
+    "Siemens Industrial Edge",
+    "OpenAPI",
+    "Python",
+    "TypeScript",
+    "LLM Prompt Engineering",
+    "Developer Experience"
+  ],
+  authors: [{ name: "Documentation Engineer" }],
+  openGraph: {
+    title: "Career Knowledge Base | Documentation Engineer",
+    description: "Documentation portal and single source of truth for my professional career as a Documentation Engineer specializing in Docs-as-Code, AI agents, and developer experience.",
+    url: "https://tharun135.github.io/knowledge-base/",
+    siteName: "Documentation Engineer Knowledge Base",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Documentation Engineer Knowledge Base & Portfolio"
+      }
+    ],
+    locale: "en_US",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Career Knowledge Base | Documentation Engineer",
+    description: "Single source of truth & portfolio covering enterprise software, AI agents, and Docs-as-Code architectures.",
+    images: ["/og-image.jpg"]
+  }
 };
 
 export default function RootLayout({
